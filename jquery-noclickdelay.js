@@ -4,7 +4,6 @@
 if (!window.navigator.userAgent.match(/(iPhone|iPad|iPod)/))
 	return;
 
-var clicksEaten = [];
 var CONFIG = { TOUCH_MOVE_THRESHHOLD: 10, PRESSED_CLASS: "pressed" }
 
 function withinDistance(x1, y1, x2, y2, distance) {
@@ -57,11 +56,9 @@ $(document).on('touchend', '.button', function(e) {
 			evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 			this.dispatchEvent(evt);
 			
-			// Don't process the default for this event to avoid WebKit stealing focus from a view we might be loading
+			// Don't process the default action for this event to avoid WebKit stealing focus from a 
+			// view we might be loading, and from dispatching a click event
 			e.preventDefault();
-			
-			clicksEaten.push(location);
-			
 		}
 	}
 	
