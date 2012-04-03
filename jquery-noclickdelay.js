@@ -5,21 +5,11 @@ if (!window.navigator.userAgent.match(/(iPhone|iPad|iPod)/))
 	return;
 
 var clicksEaten = [];
-var CONFIG = { TOUCH_MOVE_THRESHHOLD: 10, GHOST_CLICK_THRESHOLD: 25, PRESSED_CLASS: "pressed" }
+var CONFIG = { TOUCH_MOVE_THRESHHOLD: 10, PRESSED_CLASS: "pressed" }
 
 function withinDistance(x1, y1, x2, y2, distance) {
 	return Math.abs(x1 - x2) < distance && Math.abs(y1 - y2) < distance;
 }
-
-$(document).on('click', function(e) {
-	for (var i = 0; i < clicksEaten.length; i++) {
-		if (withinDistance(event.clientX, event.clientY, clicksEaten[i][0], clicksEaten[i][1], 
-			CONFIG.GHOST_CLICK_THRESHOLD)) { 
-			e.stopPropagation();
-			e.preventDefault();
-		}
-	}
-});
 
 $(document).on('touchstart', '.button', function(e) {
 	var elem = $(this);
@@ -58,17 +48,9 @@ $(document).on('touchend', '.button', function(e) {
 		elem.removeClass(CONFIG.PRESSED_CLASS);
 		var location = this.__eventLocation;
 		if (location) {
+			var touch = e.originalEvent.changedTouches[0];
 			if (!withinDistance(touch.clientX, touch.clientY, location[0], location[1], CONFIG.TOUCH_MOVE_THRESHHOLD))
 				return;
-			
-			clicksEaten.push(location);
-			
-			// Eat the click events that WebKit generates for the next 2.5s
-			window.setTimeout(function() {
-				var i = clicksEaten.indexOf(location);
-				if (i >= 0)
-					clicksEaten.splice(i, 1);
-			}, 2500);
 			
 			// Dispatch a fake click event
 			var evt = document.createEvent("MouseEvents");
@@ -77,6 +59,9 @@ $(document).on('touchend', '.button', function(e) {
 			
 			// Don't process the default for this event to avoid WebKit stealing focus from a view we might be loading
 			e.preventDefault();
+			
+			clicksEaten.push(location);
+			
 		}
 	}
 	
