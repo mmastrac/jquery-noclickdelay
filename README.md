@@ -11,3 +11,10 @@ Usage
 Just include the script. That's it:
 
     <script src="jquery-noclickdelay.js"></script>
+    
+Notes
+-----
+
+The script disables the default webkit highlight on elements that are tapped, as this highlight suffers from the 
+300ms delay. Instead adds a "pressed" class to elements that the user taps. You can use this to offer your own active 
+state UI.
