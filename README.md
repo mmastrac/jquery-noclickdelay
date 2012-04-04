@@ -8,9 +8,11 @@ causes a much longer delay than is necessary.
 Usage
 -----
 
-Just include the script. That's it:
+Just include the script and decorate your no-click-delay elements with a "button" class. That's it:
 
     <script src="jquery-noclickdelay.js"></script>
+    
+    <a onclick="blah()" href="javascript:;" class="button">Click me!</a>
     
 Notes
 -----
