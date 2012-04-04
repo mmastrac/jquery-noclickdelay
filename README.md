@@ -5,6 +5,9 @@ This jQuery plugin removes the click delay from iOS webviews. Normally iOS defer
 elapsed, to allow the user to trigger a zoom event with a double-tap. On views that don't support zooming, this
 causes a much longer delay than is necessary.
 
+This is a drop-in solution: the code dispatches native click events to the elements in question, allowing onclick
+handlers to work 'as expected'.
+
 Usage
 -----
 
