@@ -66,10 +66,13 @@ $(document).on('touchend', '.button', function(e) {
                 CONFIG.TOUCH_MOVE_THRESHHOLD))
                 return;
             
-            // Dispatch a fake click event
-            var evt = document.createEvent("MouseEvents");
-            evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            this.dispatchEvent(evt);
+            // Dispatch a fake click event within a setTimeout. If we don't do this, there's a strange bug where
+            // the next view can't correctly bring the keyboard up
+            setTimeout(function() {
+                var evt = document.createEvent("MouseEvents");
+                evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                elem.get(0).dispatchEvent(evt);
+            }, 1);
             
             // Don't process the default action for this event to avoid WebKit stealing focus from a 
             // view we might be loading, and from dispatching a click event
